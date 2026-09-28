@@ -182,4 +182,4 @@ AI was used as a development and documentation assistant. Its contributions incl
 * Implementing the Manhattan Distance heuristic.
 * Creating helper functions for path reconstruction and board display.
 * Preparing profiling and benchmarking scripts.
-* Providing `py-spy` executi
+* Providing `py-spy` execution
