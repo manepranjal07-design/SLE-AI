@@ -550,25 +550,6 @@ Testing multiple configurations provides a better understanding of how the algor
 
 ---
 
-# 📊 Experimental Comparison
-
-For each test case, the algorithms can be executed and their results recorded.
-
-A comparison table can be created in the following format:
-
-| Test Case | Algorithm | Solution Depth | Nodes Explored | Execution Time |
-| --------- | --------- | -------------: | -------------: | -------------: |
-| Easy      | BFS       |              — |              — |              — |
-| Easy      | A*        |              — |              — |              — |
-| Medium    | BFS       |              — |              — |              — |
-| Medium    | A*        |              — |              — |              — |
-| Hard      | BFS       |              — |              — |              — |
-| Hard      | A*        |              — |              — |              — |
-
-The actual values should be filled using the results produced by the program rather than manually estimated values.
-
----
-
 # 🛠️ Technologies Used
 
 The project is implemented using **Python**.
