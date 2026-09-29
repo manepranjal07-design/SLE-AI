@@ -1,25 +1,8 @@
-"""
-SLE-2 Profiling: BFS vs A* on the 8-Puzzle
---------------------------------------------
-The 8-puzzle: a 3x3 grid with tiles 1-8 and one blank (0).
-Slide tiles into the blank space to reach the goal arrangement.
-
-Algorithm A: BFS (uninformed search)
-Algorithm B: A* (informed search, using Manhattan distance heuristic)
-
-Run this file directly: python sle2_8puzzle_profiling.py
-Copy the printed numbers into your Word report's comparison table.
-"""
-
 import heapq
 import time
 from collections import deque
 
 GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)  # 0 = blank tile
-
-# A solvable starting puzzle, scrambled several moves away from goal
-# so BFS and A* show a meaningful difference (kept small enough that
-# BFS still finishes quickly for a classroom demo)
 START = (1, 2, 3, 5, 0, 6, 4, 7, 8)
 
 
