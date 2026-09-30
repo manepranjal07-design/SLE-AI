@@ -1,931 +1,455 @@
-8-Puzzle Solver: BFS vs A* Search Algorithm Comparison
+# 8-Puzzle Solver: BFS vs A* Search Algorithm Comparison
 
-Project Overview
+* The 8-Puzzle is a classic Artificial Intelligence problem used to demonstrate search algorithms, state-space exploration, pathfinding, and heuristic-based problem solving.
+* The puzzle consists of a 3×3 grid containing eight numbered tiles from 1 to 8 and one empty space represented by 0.
+* The objective is to transform an initial state into a predefined goal state by moving tiles into the empty space.
 
-The 8-Puzzle is a classic Artificial Intelligence problem used to demonstrate search algorithms, state-space exploration, pathfinding, and heuristic-based problem solving.
+## Project Objectives
 
-The puzzle consists of a 3×3 grid containing eight numbered tiles (1 to 8) and one empty space represented by 0.
+* Understand the 8-Puzzle as a state-space search problem.
+* Implement Breadth-First Search (BFS).
+* Implement A* Search.
+* Understand the difference between uninformed and informed search.
+* Use Manhattan Distance as a heuristic.
+* Reconstruct and display the solution path.
+* Count the number of nodes explored.
+* Measure algorithm execution time.
+* Compare BFS and A* performance.
 
-The objective is to move the tiles and transform a given initial state into a predefined goal state.
+## Problem Representation
 
-For example:
+* Each puzzle configuration is represented as a state.
+* The value 0 represents the empty space.
+* A valid move consists of moving a tile into the empty position.
+* The empty space can have up to four possible movements: up, down, left, and right.
+* The initial state used in the project is:
 
-Initial State
-
+```text
 1 2 3
 5 0 6
 4 7 8
+```
 
+* The goal state is:
 
-Goal State
-
+```text
 1 2 3
 4 5 6
 7 8 0
+```
 
+* The goal state is represented as:
 
-Only tiles directly adjacent to the empty space can be moved into it.
-
-This project implements two search algorithms to solve the puzzle:
-
-Breadth-First Search (BFS)
-
-A Search using Manhattan Distance*
-
-The project compares their behavior and performance based on factors such as:
-
-Solution path
-
-Number of nodes explored
-
-Search depth
-
-Execution time
-
-Search efficiency
-
-Heuristic guidance
-
-Objectives
-
-The main objectives of this project are:
-
-To understand the 8-Puzzle as a state-space search problem.
-
-To implement Breadth-First Search (BFS).
-
-To implement A Search*.
-
-To understand the difference between uninformed and informed search.
-
-To use Manhattan Distance as a heuristic.
-
-To reconstruct and display the solution path.
-
-To count the number of nodes explored during the search.
-
-To measure and compare algorithm execution time.
-
-To analyze how heuristic information affects search performance.
-
-To understand the practical trade-offs between BFS and A*.
-
-Problem Definition
-
-The 8-Puzzle can be represented as a state consisting of nine positions.
-
-For example:
-
-1 2 3
-5 0 6
-4 7 8
-
-
-The value 0 represents the empty space.
-
-A valid move consists of moving one tile into the empty position.
-
-Depending on the position of the empty space, there can be up to four possible moves:
-
-        Up
-        ↑
-Left ←  0  → Right
-        ↓
-       Down
-
-
-The objective is to find a sequence of valid moves that transforms the initial state into the goal state.
-
-Goal State
-
-The goal configuration used in the project is:
-
-1 2 3
-4 5 6
-7 8 0
-
-
-It is represented in the program as:
-
+```python
 GOAL = (1, 2, 3, 4, 5, 6, 7, 8, 0)
+```
 
-State Representation
+* The starting state is represented as:
 
-Each puzzle configuration is represented as a tuple containing nine values.
-
-Example:
-
+```python
 START = (1, 2, 3, 5, 0, 6, 4, 7, 8)
+```
 
-This corresponds to:
+## State-Space Search
 
-1 2 3
-5 0 6
-4 7 8
+* Each puzzle configuration represents a node or state.
+* A valid tile movement represents an edge between two states.
+* The initial configuration is the initial node.
+* The goal configuration is the goal node.
+* The sequence of states from the initial state to the goal represents the solution path.
 
+## Breadth-First Search
 
-Using a tuple makes it easier to:
+* BFS stands for Breadth-First Search.
+* BFS is an uninformed search algorithm.
+* It explores the search space level by level.
+* BFS uses a FIFO queue.
+* FIFO means First-In-First-Out.
+* BFS first explores states at depth 1, then depth 2, then depth 3, and continues until the goal is found.
+* Since every move in the 8-Puzzle has the same cost, BFS can find the shortest solution path.
 
-Store states.
+## BFS Data Structure
 
-Compare states.
+* BFS uses Python's `deque`.
 
-Track visited states.
-
-Use states in sets and dictionaries.
-
-Avoid modifying an existing state accidentally.
-
-Search Space
-
-The 8-Puzzle can be viewed as a state-space search problem.
-
-Each puzzle configuration represents a state.
-
-A movement of a tile creates a new state.
-
-For example:
-
-Current State
-
-1 2 3
-5 0 6
-4 7 8
-
-
-Moving tile 5 into the empty space produces:
-
-1 2 3
-0 5 6
-4 7 8
-
-
-The two configurations are connected in the search graph.
-
-Therefore:
-
-Node → Puzzle state
-
-Edge → Valid tile movement
-
-Initial node → Starting configuration
-
-Goal node → Goal configuration
-
-Path → Sequence of moves required to solve the puzzle
-
-Algorithm 1: Breadth-First Search (BFS)
-
-What is BFS?
-
-Breadth-First Search is an uninformed search algorithm.
-
-It explores the search space level by level.
-
-BFS uses a FIFO (First-In-First-Out) queue.
-
-The general idea is:
-
-Start
-  ↓
-Explore all states at depth 1
-  ↓
-Explore all states at depth 2
-  ↓
-Explore all states at depth 3
-  ↓
-Continue until goal is found
-
-
-Because every move in the 8-Puzzle has the same cost, BFS finds the shortest solution path.
-
-BFS Data Structure
-
-The implementation uses:
-
+```python
 from collections import deque
+```
 
-A queue is created using:
+* A queue can be created using:
 
+```python
 queue = deque()
+```
 
-States are added using:
+* A state is added using:
 
+```python
 queue.append(state)
+```
 
-and removed using:
+* A state is removed using:
 
+```python
 queue.popleft()
+```
 
-This provides FIFO behavior.
+* This provides FIFO behavior.
 
-BFS Working
+## BFS Working
 
-The BFS process is:
+* Add the initial state to the queue.
+* Mark the initial state as visited.
+* Remove the first state from the queue.
+* Check whether the state is the goal.
+* Generate all valid neighboring states.
+* Add unvisited states to the queue.
+* Store parent information for each state.
+* Continue searching until the goal is reached or the queue becomes empty.
+* Reconstruct the solution path using the stored parent information.
 
-Add the initial puzzle state to the queue.
+## BFS Characteristics
 
-Mark the initial state as visited.
+* Search type: Uninformed search.
+* Data structure: FIFO queue.
+* Heuristic: Not used.
+* Complete: Yes, for finite state spaces.
+* Optimal: Yes, when all moves have equal cost.
+* Memory usage: Can be high.
+* Search strategy: Level-by-level exploration.
 
-Remove the first state from the queue.
+## A* Search
 
-Check whether it is the goal state.
+* A* is an informed search algorithm.
+* A* uses additional information about how close a state is to the goal.
+* A* uses the evaluation function:
 
-Generate all valid neighboring states.
-
-Add unvisited neighbors to the queue.
-
-Store their parent information.
-
-Continue until the goal is reached or the queue becomes empty.
-
-Reconstruct the solution path using the stored parent information.
-
-BFS Characteristics
-
-Property
-
-BFS
-
-Search Type
-
-Uninformed
-
-Data Structure
-
-FIFO Queue
-
-Heuristic
-
-No
-
-Complete
-
-Yes, for finite state spaces
-
-Optimal
-
-Yes, when all moves have equal cost
-
-Memory Usage
-
-High
-
-Search Strategy
-
-Level-by-level
-
-Algorithm 2: A* Search
-
-What is A*?
-
-A* is an informed search algorithm.
-
-Unlike BFS, A* uses additional information about how close a state is to the goal.
-
-It uses the evaluation function:
-
+```text
 f(n) = g(n) + h(n)
+```
 
+* `g(n)` represents the actual cost from the initial state to the current state.
+* `h(n)` represents the estimated cost from the current state to the goal.
+* `f(n)` represents the estimated total cost of reaching the goal through the current state.
+* A* prioritizes states with smaller `f(n)` values.
 
-where:
+## Manhattan Distance
 
-g(n) = actual cost from the initial state to the current state
+* The project uses Manhattan Distance as the heuristic function.
+* Manhattan Distance estimates the number of horizontal and vertical movements required to move a tile from its current position to its goal position.
+* The formula is:
 
-h(n) = estimated cost from the current state to the goal
-
-f(n) = estimated total cost of the solution through that state
-
-A* prioritizes states with smaller f(n) values.
-
-Manhattan Distance Heuristic
-
-This project uses Manhattan Distance as the heuristic function.
-
-The Manhattan Distance of a tile is the number of horizontal and vertical movements required to move that tile from its current position to its goal position.
-
-For a tile:
-
+```text
 Manhattan Distance =
 |current row - goal row| +
 |current column - goal column|
+```
 
+* The Manhattan Distance of the complete puzzle is calculated by adding the distances of all tiles.
+* The blank tile represented by 0 is not included.
 
-The heuristic value of the complete puzzle is calculated by adding the Manhattan distances of all tiles.
+## Example of Manhattan Distance
 
-The blank tile (0) is not included in the calculation.
+* Suppose tile 5 is currently at row 1 and column 0.
+* Its goal position is row 1 and column 1.
+* The calculation is:
 
-Example of Manhattan Distance
-
-Suppose tile 5 is currently located at:
-
-Row = 1
-Column = 0
-
-
-and its goal position is:
-
-Row = 1
-Column = 1
-
-
-Then:
-
+```text
 Distance = |1 - 1| + |0 - 1|
          = 0 + 1
          = 1
-
-
-Therefore, tile 5 contributes 1 to the heuristic value.
-
-Why Manhattan Distance?
-
-Manhattan Distance is useful for the 8-Puzzle because it estimates how many horizontal and vertical movements are needed to place the tiles in their correct positions.
-
-It provides A* with information about the direction in which the search should proceed.
-
-Unlike BFS, A* does not blindly explore every state at the same depth.
-
-A* Working
-
-The A* algorithm works approximately as follows:
-
-Start with the initial puzzle state.
-
-Calculate its heuristic value.
-
-Add the state to a priority queue.
-
-Select the state with the smallest f(n) value.
-
-Check whether it is the goal.
-
-Generate valid neighboring states.
-
-Calculate g(n), h(n), and f(n) for each neighbor.
-
-Add promising states to the priority queue.
-
-Continue until the goal state is reached.
-
-Reconstruct the solution path.
-
-The priority queue allows the algorithm to process the state that currently appears most promising.
-
-BFS vs A* Comparison
-
-Feature
-
-BFS
-
-A*
-
-Search Type
-
-Uninformed
-
-Informed
-
-Heuristic
-
-No
-
-Yes
-
-Evaluation
-
-Depth
-
-g(n) + h(n)
-
-Data Structure
-
-Queue
-
-Priority Queue
-
-Guidance
-
-No goal-distance information
-
-Uses heuristic
-
-Shortest Path
-
-Yes for equal-cost moves
-
-Yes with an appropriate admissible heuristic
-
-Memory
-
-Can be high
-
-Can also be high
-
-Search Behavior
-
-Explores level-by-level
-
-Focuses toward promising states
-
-Implementation
-
-Relatively simple
-
-More complex
-
-Heuristic Used
-
-None
-
-Manhattan Distance
-
-Solution Path Reconstruction
-
-Finding the goal state is not enough for this project.
-
-The program also reconstructs the sequence of states that leads from the initial state to the goal.
-
-To achieve this, the program stores the parent state of each discovered state.
-
-Conceptually:
-
-Initial State
-     ↓
-    State A
-     ↓
-    State B
-     ↓
-    State C
-     ↓
-Goal State
-
-
-When the goal is found, the program follows the parent references backward:
-
-Goal
- ↓
-State C
- ↓
-State B
- ↓
-State A
- ↓
-Initial
-
-
-The resulting path is then reversed so that it can be displayed from:
-
-Initial → Goal
-
-
-This allows the complete solution to be visualized step by step.
-
-Example Solution Display
-
-A solution can be represented as:
-
-Initial State:
-
-1 2 3
-5 0 6
-4 7 8
-
-        ↓
-
-1 2 3
-0 5 6
-4 7 8
-
-        ↓
-
-1 2 3
-4 5 6
-0 7 8
-
-        ↓
-
+```
+
+* Therefore, tile 5 contributes 1 to the heuristic value.
+
+## Why Manhattan Distance Is Used
+
+* Manhattan Distance gives A* information about how close the tiles are to their goal positions.
+* It helps A* decide which states are more promising.
+* Unlike BFS, A* uses information about the goal while searching.
+
+## A* Working
+
+* Start with the initial puzzle state.
+* Calculate its heuristic value.
+* Add the state to a priority queue.
+* Select the state with the smallest `f(n)` value.
+* Check whether it is the goal.
+* Generate valid neighboring states.
+* Calculate `g(n)`, `h(n)`, and `f(n)` for each neighbor.
+* Add promising states to the priority queue.
+* Continue until the goal is reached.
+* Reconstruct the solution path.
+
+## A* Data Structure
+
+* A* uses a priority queue.
+* Python's `heapq` module can be used for the priority queue.
+
+```python
+import heapq
+```
+
+* The priority queue selects the state with the lowest priority or `f(n)` value.
+
+## BFS vs A* Comparison
+
+* BFS is an uninformed search algorithm.
+* A* is an informed search algorithm.
+* BFS does not use a heuristic.
+* A* uses Manhattan Distance as a heuristic.
+* BFS uses a normal queue.
+* A* uses a priority queue.
+* BFS explores states level by level.
+* A* focuses on states that appear more promising based on `g(n) + h(n)`.
+* BFS can use high memory.
+* A* can also use significant memory.
+* BFS is relatively simple to implement.
+* A* is more complex because it requires a heuristic.
+* Both can find optimal solutions under appropriate conditions.
+
+## Solution Path Reconstruction
+
+* Finding the goal state is not enough because the complete sequence of moves is also required.
+* The program stores the parent state of each discovered state.
+* When the goal is found, the program follows the parent references backward.
+* The path is then reversed to display it from the initial state to the goal state.
+* This allows the complete solution to be displayed.
+
+## Performance Analysis
+
+* The project compares the practical performance of BFS and A*.
+* Important performance measurements include:
+
+  * Execution time.
+  * Number of nodes explored.
+  * Solution depth.
+  * Search efficiency.
+* Execution time measures how long the algorithm takes to find the solution.
+* Nodes explored represents the number of states processed during the search.
+* Solution depth represents the number of moves required to reach the goal.
+* Search efficiency measures how much of the search space is explored before reaching the goal.
+
+## Test Cases
+
+* The project can use different puzzle configurations.
+* Easy example:
+
+```text
 1 2 3
 4 5 6
 7 0 8
+```
 
-        ↓
+* Medium example:
 
-Goal State:
-
-1 2 3
-4 5 6
-7 8 0
-
-
-The exact sequence depends on the selected initial state.
-
-Performance Analysis
-
-The project does not only solve the puzzle. It also compares the practical performance of BFS and A*.
-
-The following metrics can be collected:
-
-1. Execution Time
-
-Measures how long the algorithm takes to find the solution.
-
-Example:
-
-BFS Time  = 0.0021 seconds
-A* Time   = 0.0014 seconds
-
-
-The actual values depend on the input puzzle and computer system.
-
-2. Nodes Explored
-
-This measures how many states were processed during the search.
-
-A smaller number of explored nodes can indicate that the algorithm avoided exploring unnecessary parts of the search space.
-
-3. Solution Depth
-
-Solution depth represents the number of moves required to reach the goal.
-
-For example:
-
-Solution Depth = 8 moves
-
-
-For the same puzzle and equal move costs, BFS can be used as a shortest-path reference.
-
-4. Search Efficiency
-
-The project can compare how much of the available state space each algorithm explores before reaching the goal.
-
-A* uses Manhattan Distance to guide its exploration.
-
-Test Cases
-
-The project can be tested using different puzzle difficulties.
-
-For example:
-
-Easy
-
-1 2 3
-4 5 6
-7 0 8
-
-
-Medium
-
+```text
 1 2 3
 5 0 6
 4 7 8
+```
 
+* A more scrambled configuration can be used as a hard test case.
+* Testing different configurations helps demonstrate how the algorithms behave as the problem becomes more difficult.
 
-Hard
+## Technologies Used
 
-A more scrambled configuration can be used to increase the search depth and make the performance differences more visible.
+* Python 3.
+* `collections.deque`.
+* `heapq`.
+* Tuples.
+* Sets.
+* Dictionaries.
+* Functions.
+* Loops.
+* Priority queues.
+* State-space representation.
 
-Testing multiple configurations provides a better understanding of how the algorithms behave as the problem becomes more difficult.
+## Important Python Components
 
-Technologies Used
+* BFS uses `deque` for queue operations.
 
-The project is implemented using Python.
-
-Main Python concepts and libraries used include:
-
-Python 3
-
-collections.deque
-
-heapq
-
-Tuples
-
-Sets
-
-Dictionaries
-
-Functions
-
-Loops
-
-Priority queues
-
-State-space representation
-
-Project Structure
-
-A possible project structure is:
-
-8-Puzzle-BFS-AStar/
-
- bfs.py
- astar.py
- puzzle.py
- puzzle_profiling.py
- README.md
- Contribution_Log.md
- results/
-     performance_results.csv
-
-
-The exact filenames may vary depending on the final project implementation.
-
-Important Python Components
-
-BFS Queue
-
+```python
 from collections import deque
 
 queue = deque()
 queue.append(start)
 
 current = queue.popleft()
+```
 
-The deque provides efficient insertion and removal from the front of the queue.
+* A* uses `heapq` for priority queue operations.
 
-A* Priority Queue
-
-A* can use Python's heapq module:
-
+```python
 import heapq
+```
 
-The priority queue stores states according to their f(n) value.
+* The program uses sets to store visited states.
 
-Conceptually:
-
-f(n) = g(n) + h(n)
-
-
-The state with the lowest priority is selected for exploration.
-
-Visited States
-
-The search algorithms need to avoid repeatedly exploring the same puzzle configuration.
-
-For this purpose, visited states can be stored in a set:
-
+```python
 visited = set()
+```
 
-When a state is encountered, the program checks whether it has already been explored.
+* Visited states help prevent repeated exploration and cycles.
 
-This prevents unnecessary repeated searches and helps avoid cycles.
+## Complexity
 
-Complexity
+* The theoretical complexity of BFS depends on the branching factor and solution depth.
+* General BFS complexity can be represented as:
 
-The theoretical complexity of search algorithms depends on the branching factor and solution depth.
-
-For BFS, the time and space requirements can grow rapidly as the search depth increases.
-
-A common general representation is:
-
+```text
 Time:  O(b^d)
 Space: O(b^d)
+```
 
+* `b` represents the branching factor.
+* `d` represents the depth of the shallowest solution.
+* A* performance depends on the quality of its heuristic.
+* Manhattan Distance helps A* guide the search toward promising states.
+* Actual performance depends on the input state and implementation.
 
-where:
+## Conceptual Difference
 
-b = branching factor
+* BFS asks which states are closest to the starting state in terms of number of moves.
+* A* considers both the cost already travelled and the estimated cost to the goal.
+* BFS does not use information about the goal's location.
+* A* uses Manhattan Distance to estimate how close a state is to the goal.
 
-d = depth of the shallowest solution
+## Advantages of BFS
 
-For A*, performance depends strongly on the quality of its heuristic.
+* Simple to understand and implement.
+* Complete for a finite state space.
+* Finds the shortest solution when every move has equal cost.
+* Does not require a heuristic.
+* Useful as a baseline for comparison.
 
-With a useful heuristic such as Manhattan Distance, A* can reduce unnecessary exploration compared with uninformed search.
+## Limitations of BFS
 
-The exact practical performance depends on the input state and implementation.
+* Can explore many unnecessary states.
+* Memory usage can become large.
+* Becomes less practical as the solution depth increases.
 
-BFS and A* — Conceptual Difference
+## Advantages of A*
 
-The main difference can be understood as:
+* Uses heuristic information to guide the search.
+* Can avoid exploring many irrelevant states.
+* Can find optimal solutions when used with an appropriate admissible heuristic.
+* Manhattan Distance is suitable for the 8-Puzzle.
+* Demonstrates informed search.
 
-BFS asks:
+## Limitations of A*
 
-"Which states are closest in terms of number of moves from the starting state?"
+* More complex than BFS.
+* Requires a heuristic function.
+* Can still require significant memory.
+* Performance depends on the heuristic and implementation.
 
-A* asks:
+## Project Outcome
 
-"Which states have the lowest estimated total cost to reach the goal?"
+* The project demonstrates two different AI search strategies for solving the same problem.
+* BFS explores the state space systematically without additional information about the goal.
+* A* uses Manhattan Distance to estimate which states are more promising.
+* Both algorithms can be tested using the same puzzle configurations.
+* Their solution depth, explored nodes, and execution time can be compared.
+* The project demonstrates the difference between uninformed and informed search.
 
-BFS does not use information about the goal's location.
+## Key AI Concepts
 
-A* uses the Manhattan Distance heuristic to estimate how close a state is to the goal.
+* State-space search.
+* Graph traversal.
+* Uninformed search.
+* Informed search.
+* Breadth-First Search.
+* A* Search.
+* Heuristic functions.
+* Manhattan Distance.
+* Priority queues.
+* Search depth.
+* Path reconstruction.
+* Visited-state management.
+* Performance benchmarking.
+* Algorithm comparison.
 
-Advantages of BFS
+## How to Run
 
-Simple to understand and implement.
+* Install Python 3.x.
+* Check the Python version using:
 
-Complete for a finite state space.
-
-Finds the shortest solution when every move has equal cost.
-
-Does not require a heuristic.
-
-Useful as a baseline for comparison.
-
-Limitations
-
-Can explore many unnecessary states.
-
-Memory usage can become large.
-
-Becomes less practical as the solution depth increases.
-
-Advantages of A*
-
-Uses heuristic information to guide the search.
-
-Can avoid exploring many irrelevant states.
-
-Can find optimal solutions when used with an appropriate admissible heuristic.
-
-Manhattan Distance is particularly suitable for the 8-Puzzle.
-
-Provides a useful example of informed search.
-
-Limitations
-
-More complex than BFS.
-
-Requires a heuristic function.
-
-Can still require significant memory.
-
-Performance depends on the heuristic and implementation.
-
-Project Outcome
-
-The project demonstrates how two different AI search strategies can solve the same problem using different approaches.
-
-BFS explores the state space systematically without additional knowledge about the goal.
-
-A* uses the Manhattan Distance heuristic to estimate which states are more promising and prioritize them.
-
-By running both algorithms on the same puzzle configurations and recording their performance, the project provides an empirical comparison of uninformed search versus informed search.
-
-Key AI Concepts Demonstrated
-
-This project demonstrates several important Artificial Intelligence concepts:
-
-State-space search
-
-Graph traversal
-
-Uninformed search
-
-Informed search
-
-Breadth-First Search
-
-A* Search
-
-Heuristic functions
-
-Manhattan Distance
-
-Priority queues
-
-Search depth
-
-Path reconstruction
-
-Visited-state management
-
-Performance benchmarking
-
-Algorithm comparison
-
-How to Run the Project
-
-Requirements
-
-Install Python 3.x on your system.
-
-Check the Python version:
-
+```text
 python --version
+```
 
-or:
+* Run BFS using:
 
-python3 --version
-
-Most components of this project use Python's standard library, so additional packages may not be required for the basic solver.
-
-Run BFS
-
+```text
 python bfs.py
+```
 
-Run A*
+* Run A* using:
 
+```text
 python astar.py
+```
 
-Run Performance Testing
+* Run the profiling or benchmarking program using:
 
-If the project contains a profiling or benchmarking script:
-
+```text
 python puzzle_profiling.py
+```
 
-The benchmarking script can be used to execute the algorithms repeatedly and collect performance information.
+## Profiling and Benchmarking
 
-Profiling and Benchmarking
+* Profiling helps identify where the program spends execution time.
+* It can identify frequently executed functions.
+* It can measure time spent in search operations.
+* It can measure state-generation overhead.
+* It can measure heuristic calculation cost.
+* It can analyze queue and priority-queue operations.
+* Repeated executions can provide more reliable performance measurements.
 
-For more detailed performance analysis, the project may use profiling tools to identify where the program spends its execution time.
+## Experimental Methodology
 
-For example, Python profiling can help identify:
+* Use the same initial state for BFS and A*.
+* Use the same goal state.
+* Run both algorithms.
+* Record solution depth.
+* Record the number of explored nodes.
+* Record execution time.
+* Compare the collected results.
 
-Frequently executed functions
+## Important Observation
 
-Time spent in search operations
+* Execution time can vary depending on:
 
-State-generation overhead
+  * Computer hardware.
+  * Python version.
+  * Operating system.
+  * Background processes.
+  * Number of repetitions.
+  * Implementation details.
+* Therefore, execution-time results are experimental measurements and are not universal values.
+* The number of explored states and solution depth also depend on the selected puzzle.
 
-Heuristic calculation cost
+## Conclusion
 
-Queue/priority-queue operations
+* The 8-Puzzle is useful for understanding search algorithms in Artificial Intelligence.
+* BFS performs an uninformed level-by-level search.
+* A* uses Manhattan Distance to guide its search.
+* The project reconstructs the solution path.
+* The project measures algorithm performance.
+* Comparing BFS and A* demonstrates how different search strategies explore a search space differently.
+* The project provides practical experience with state representation, search algorithms, heuristic search, path reconstruction, performance measurement, and algorithm comparison.
 
-Repeated executions can also provide more reliable measurements than relying on a single run.
+## Author
 
-Experimental Methodology
+* Pranjal Vijemane.
+* Engineering Student.
+* Artificial Intelligence / Machine Learning.
 
-To make the comparison meaningful, BFS and A* should be tested using the same initial puzzle configurations.
+## License
 
-For every test case:
+* This project was developed for educational and academic purposes as part of Artificial Intelligence coursework.
 
-Use the same initial state for both algorithms.
+## Acknowledgement
 
-Use the same goal state.
-
-Run both algorithms.
-
-Record the solution depth.
-
-Record the number of explored nodes.
-
-Record execution time.
-
-Compare the results.
-
-This ensures that the comparison is based on the same problem conditions.
-
-Important Observation
-
-Execution time can vary depending on:
-
-Computer hardware
-
-Python version
-
-Operating system
-
-Background processes
-
-Number of repetitions
-
-Implementation details
-
-Therefore, execution-time results should be treated as experimental measurements rather than universal values.
-
-The number of explored states and solution depth are also dependent on the specific input puzzle.
-
-Conclusion
-
-The 8-Puzzle provides a useful example for understanding search algorithms in Artificial Intelligence.
-
-In this project, BFS and A* are implemented to solve the same puzzle problem.
-
-BFS performs an uninformed level-by-level search, while A* uses the Manhattan Distance heuristic to guide its search toward promising states.
-
-The project goes beyond simply finding a solution by also reconstructing the solution path and measuring algorithm performance.
-
-The experimental comparison helps demonstrate an important AI concept: the way an algorithm explores a search space can significantly affect the amount of computation required to find a solution.
-
-Overall, the project provides practical experience with:
-
-State Representation
-       ↓
-Search Algorithms
-       ↓
-BFS / A*
-       ↓
-Heuristic Search
-       ↓
-Path Reconstruction
-       ↓
-Performance Measurement
-       ↓
-Algorithm Comparison
-
-
-‍ Author
-
-Pranjal Vijemane
-
-Engineering Student Artificial Intelligence / Machine Learning
-
-License
-
-This project was developed for educational and academic purposes as part of Artificial Intelligence coursework.
-
-Acknowledgement
-
-This project was developed as an academic implementation and learning exercise to understand search algorithms, heuristic functions, state-space problems, and algorithm performance analysis.
+* This project was developed as an academic implementation and learning exercise to understand search algorithms, heuristic functions, state-space problems, and algorithm performance analysis.
